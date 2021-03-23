@@ -12,35 +12,37 @@ describe('demo routes', () => {
     it('allows a user to signup via POST', async () => {
         return request(app)
             .post('/api/v1/auth/signup')
-            .send({ email: 'test@test.com', image: "mypic", password: 'password' })
+            .send({ email: 'test@test.com', password: 'password' })
             .then(res => {
                 expect(res.body).toEqual({
                     id: expect.any(String),
-                    email: 'test@test.com',
-                    image: "mypic"
+                    email: 'test@test.com'
                 });
             });
     });
 
     it('allows a user to login via POST', async () => {
         const user = await UserService.create({
-            email: 'test@test.com',
+            email: 'test2@test.com',
             password: 'password'
         });
 
+        console.log(user)
         const res = await request(app)
             .post('/api/v1/auth/login')
             .send({
-                email: 'test@test.com',
-                password: 'password',
-            });
+                email: 'test2@test.com',
+                password: 'password'
+            }).then(res => {
+                console.log(res.body)
+                expect(res.body).toEqual({
 
-        expect(res.body).toEqual({
-            id: user.id,
-            email: 'test@test.com',
-            image: "mypic"
-        });
-    });
+                    id: expect.any(String),
+                    email: 'test2@test.com',
+
+                });
+            });
+    })
 
     it('verifies a user is logged in', async () => {
         const agent = request.agent(app);
@@ -48,7 +50,7 @@ describe('demo routes', () => {
             email: 'test@test.com',
             password: 'password'
         });
-
+        console.log(agent)
         await agent
             .post('/api/v1/auth/login')
             .send({
@@ -61,8 +63,7 @@ describe('demo routes', () => {
 
         expect(res.body).toEqual({
             id: user.id,
-            email: 'test@test.com',
-            image: "mypic"
+            email: 'test@test.com'
         });
     });
 });

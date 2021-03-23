@@ -12,10 +12,11 @@ describe('demo routes', () => {
     it('allows a user to signup via POST', async () => {
         return request(app)
             .post('/api/v1/auth/signup')
-            .send({ email: 'test@test.com', password: 'password' })
+            .send({ email: 'test@test.com', username: 'ListeningStateChangedEvent', password: 'password' })
             .then(res => {
                 expect(res.body).toEqual({
                     id: expect.any(String),
+                    username: 'ListeningStateChangedEvent',
                     email: 'test@test.com'
                 });
             });
@@ -24,6 +25,7 @@ describe('demo routes', () => {
     it('allows a user to login via POST', async () => {
         const user = await UserService.create({
             email: 'test2@test.com',
+            username: 'ListeningStateChangedEvent',
             password: 'password'
         });
 
@@ -36,10 +38,9 @@ describe('demo routes', () => {
             }).then(res => {
                 console.log(res.body)
                 expect(res.body).toEqual({
-
                     id: expect.any(String),
                     email: 'test2@test.com',
-
+                    username: 'ListeningStateChangedEvent'
                 });
             });
     })
@@ -48,6 +49,7 @@ describe('demo routes', () => {
         const agent = request.agent(app);
         const user = await UserService.create({
             email: 'test@test.com',
+            username: 'ListeningStateChangedEvent',
             password: 'password'
         });
         console.log(agent)
@@ -55,7 +57,8 @@ describe('demo routes', () => {
             .post('/api/v1/auth/login')
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'password',
+                username: 'ListeningStateChangedEvent'
             });
 
         const res = await agent
@@ -63,7 +66,8 @@ describe('demo routes', () => {
 
         expect(res.body).toEqual({
             id: user.id,
-            email: 'test@test.com'
+            email: 'test@test.com',
+            username: 'ListeningStateChangedEvent'
         });
     });
 });

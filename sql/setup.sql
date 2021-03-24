@@ -11,7 +11,10 @@ CREATE TABLE users(
 CREATE TABLE goals(
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   title VARCHAR(50) NOT NULL,
-  goalAmount TEXT NOT NULL,
-  currentAmount INTEGER NOT NULL, 
+  goal_amount INTEGER NOT NULL,
+  current_amount INTEGER NOT NULL, 
+  private_state BOOLEAN NOT NULL,
+  completed BOOLEAN NOT NULL,
+  date_created VARCHAR(50) NOT NULL,
   user_id BIGINT REFERENCES users(id) NOT NULL
 );

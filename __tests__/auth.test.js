@@ -29,14 +29,13 @@ describe('demo routes', () => {
             password: 'password'
         });
 
-        console.log(user)
+
         const res = await request(app)
             .post('/api/v1/auth/login')
             .send({
                 email: 'test2@test.com',
                 password: 'password'
             }).then(res => {
-                console.log(res.body)
                 expect(res.body).toEqual({
                     id: expect.any(String),
                     email: 'test2@test.com',
@@ -52,7 +51,6 @@ describe('demo routes', () => {
             username: 'ListeningStateChangedEvent',
             password: 'password'
         });
-        console.log(agent)
         await agent
             .post('/api/v1/auth/login')
             .send({

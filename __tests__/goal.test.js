@@ -216,4 +216,49 @@ describe('videos routes', () => {
                 }])
             });
     });
+
+    it(' one goal for one user', async () => {
+        const agent = request.agent(app);
+        const user = await UserService.create({
+            email: 'test@test.com',
+            username: 'ListeningStateChangedEvent',
+            password: 'password'
+        });
+
+
+        await agent
+            .post('/api/v1/auth/login')
+            .send({
+                email: 'test@test.com',
+                password: 'password',
+                username: 'ListeningStateChangedEvent'
+            });
+
+        const res1 = await agent
+            .post('/api/v1/goal')
+            .send({
+                title: 'gole title',
+                goalAmount: 70,
+                currentAmount: 50,
+                privatestate: false,
+                completed: false,
+                dateCreated: "date string",
+                userId: user.id
+            });
+
+        const res = await agent
+            .get(`/api/v1/goal/userGoal/${res1.body.id}`)
+            .then(res => {
+                expect(res.body).toEqual({
+                    title: 'gole title',
+                    goalAmount: 70,
+                    id: expect.any(String),
+                    currentAmount: 50,
+                    privatestate: false,
+                    completed: false,
+                    dateCreated: "date string",
+                    userId: user.id
+                })
+            });
+    });
 });
